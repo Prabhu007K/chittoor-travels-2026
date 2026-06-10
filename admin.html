@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fleet Admin — Chittoor Travels</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div id="login-view">
+    <div class="login-box">
+      <h1>Travels Admin</h1>
+      <p>Manage vehicles, rates, and customer bookings.</p>
+      <form id="login-form">
+        <label>Password<input type="password" id="admin-password" required></label>
+        <button type="submit" class="btn-primary" style="width:100%;padding:.65rem">Sign in</button>
+      </form>
+      <p class="login-hint">Demo password: <code>chittoor2026</code></p>
+      <p class="login-hint" style="margin-top:.5rem"><a href="index.html">← Back to booking site</a></p>
+    </div>
+  </div>
+
+  <div id="admin-view" class="hidden">
+    <header class="admin-header">
+      <div><h1>Chittoor Travels — Admin</h1><p>Fleet & booking management</p></div>
+      <div class="admin-nav">
+        <a href="index.html" class="btn-outline">View site</a>
+        <button type="button" class="btn-outline" id="logout-btn">Log out</button>
+      </div>
+    </header>
+
+    <main class="admin-wrap">
+      <div class="stats">
+        <div class="stat"><span class="stat-val" id="stat-vehicles">0</span><span class="stat-lbl">Vehicles</span></div>
+        <div class="stat"><span class="stat-val" id="stat-bookings">0</span><span class="stat-lbl">Bookings</span></div>
+        <div class="stat"><span class="stat-val" id="stat-pending">0</span><span class="stat-lbl">Pending</span></div>
+      </div>
+
+      <section class="admin-card">
+        <h2 id="form-title">Add vehicle</h2>
+        <form id="vehicle-form" novalidate>
+          <input type="hidden" id="v-id-hidden">
+          <div class="form-grid">
+            <label>ID (slug)<input id="v-id" pattern="[a-z0-9-]+" placeholder="sedan" required></label>
+            <label>Name<input id="v-name" required></label>
+            <label>Emoji<input id="v-emoji" maxlength="4"></label>
+            <label>Capacity<input type="number" id="v-capacity" min="1" required></label>
+            <label>Rate (₹/km)<input type="number" id="v-rate" min="1" required></label>
+            <label>Available<select id="v-available"><option value="true">Yes</option><option value="false">Unavailable</option></select></label>
+          </div>
+          <label style="display:block;font-size:.82rem;font-weight:500;margin-bottom:.75rem">
+            Vehicle image URL
+            <input id="v-image-url" placeholder="https://… or upload below" style="width:100%;margin-top:.35rem;padding:.55rem;border:1px solid #e2e8f0;border-radius:8px;font:inherit">
+          </label>
+          <label style="display:block;font-size:.82rem;font-weight:500;margin-bottom:.75rem">
+            Or upload image
+            <input type="file" id="v-image-file" accept="image/*" style="margin-top:.35rem;font:inherit">
+            <small style="color:#64748b;display:block;margin-top:.25rem">Shows emoji if no image or if image fails to load.</small>
+          </label>
+          <div id="image-preview-wrap" class="hidden" style="margin-bottom:1rem">
+            <img id="image-preview" alt="Preview" style="max-width:160px;max-height:100px;border-radius:8px;border:1px solid #e2e8f0;object-fit:cover">
+          </div>
+          <label style="display:block;font-size:.82rem;font-weight:500;margin-bottom:1rem">Description<textarea id="v-desc" rows="2" style="width:100%;margin-top:.35rem;padding:.55rem;border:1px solid #e2e8f0;border-radius:8px;font:inherit"></textarea></label>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="save-vehicle-btn">Save vehicle</button>
+            <button type="button" class="btn-outline hidden" id="cancel-edit">Cancel</button>
+          </div>
+          <p id="form-status" class="form-status hidden"></p>
+        </form>
+      </section>
+
+      <section class="admin-card">
+        <h2>Fleet</h2>
+        <div class="table-wrap"><table><thead><tr><th>Vehicle</th><th>Capacity</th><th>Rate</th><th>Status</th><th></th></tr></thead><tbody id="fleet-table"></tbody></table></div>
+      </section>
+
+      <section class="admin-card">
+        <h2>Customer bookings</h2>
+        <p style="font-size:.82rem;color:#64748b;margin-bottom:.75rem">Confirm only when the vehicle is free on the trip date. Customer can print the bill after confirmation.</p>
+        <div class="table-wrap"><table><thead><tr><th>Date</th><th>Passenger</th><th>Trip</th><th>Vehicle</th><th>Status</th><th>Actions</th></tr></thead><tbody id="bookings-table"></tbody></table></div>
+      </section>
+    </main>
+  </div>
+  <script src="js/store.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

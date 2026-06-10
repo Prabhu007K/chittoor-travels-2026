@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chittoor Travels — Private Vehicle Booking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container nav-bar">
+      <a class="brand" href="#">🚌 Chittoor<span>Travels</span></a>
+      <p class="tagline">Family trips · Pilgrimages · Outstation · <a href="admin.html" style="color:#0284c7">Admin</a></p>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Book your ride in Chittoor</h1>
+      <p>Cars, mini vans & buses for family trips, temple visits, and outstation travel.</p>
+    </div>
+  </section>
+
+  <section class="route-section container booking-step">
+    <p class="step-label">Step 1</p>
+    <h2>Select pickup & drop on map</h2>
+    <p class="route-intro">Pick a city, then click the map inside the green circle for pickup. Drop anywhere in India.</p>
+    <div class="pickup-cities">
+      <span class="pickup-cities-label">Pickup cities:</span>
+      <button type="button" class="city-chip active" data-pickup-city="chittoor">Chittoor</button>
+      <button type="button" class="city-chip" data-pickup-city="chennai">Chennai</button>
+      <button type="button" class="city-chip" data-pickup-city="bangalore">Bangalore</button>
+      <button type="button" class="city-chip" data-pickup-city="tirupati">Tirupati</button>
+      <button type="button" class="city-chip" data-pickup-city="hyderabad">Hyderabad</button>
+    </div>
+    <div class="map-toolbar">
+      <button type="button" id="mode-pickup" class="map-mode active">📍 Pickup</button>
+      <button type="button" id="mode-drop" class="map-mode">🏁 Drop</button>
+      <button type="button" id="pickup-center-btn" class="map-mode">📌 Pin map center</button>
+      <button type="button" id="map-clear" class="map-mode map-mode-clear">Clear route</button>
+    </div>
+    <div class="map-search-row">
+      <div class="map-search">
+        <input type="text" id="search-pickup" placeholder="Search pickup within service cities">
+        <button type="button" id="search-pickup-btn" class="map-search-btn">Go</button>
+      </div>
+      <div class="map-search">
+        <input type="text" id="search-drop" placeholder="Search drop anywhere in India">
+        <button type="button" id="search-drop-btn" class="map-search-btn">Go</button>
+      </div>
+    </div>
+    <p id="map-hint" class="map-hint">Click inside the green circle near Chittoor — or use Pin map center</p>
+    <p id="route-error" class="route-error hidden" role="alert"></p>
+    <p id="route-status" class="route-status"></p>
+    <div id="route-map"></div>
+    <div id="route-summary" class="route-summary hidden">
+      Route: <strong><span id="summary-distance">0</span> km</strong> · approx. <strong><span id="summary-duration">0</span> min</strong> drive
+    </div>
+  </section>
+
+  <main class="container main-grid">
+    <section class="vehicles booking-step" id="vehicles-section">
+      <p class="step-label">Step 2</p>
+      <h2>Choose a vehicle</h2>
+      <p class="step-hint" id="vehicle-step-hint">Set pickup and drop on the map first, then pick a vehicle.</p>
+      <div class="vehicle-list" id="vehicle-list"></div>
+    </section>
+
+    <aside class="booking-panel booking-step" id="booking-section">
+      <p class="step-label">Step 3</p>
+      <h2>Booking details</h2>
+      <form id="booking-form">
+        <div class="selected-vehicle" id="selected-info">Select a vehicle from Step 2</div>
+
+        <label>Trip date<input type="date" id="trip-date" required></label>
+        <label>Pickup location<input type="text" id="pickup" placeholder="Set on map" readonly required></label>
+        <label>Drop location<input type="text" id="destination" placeholder="Set on map" readonly required></label>
+        <label>Passenger name<input type="text" id="passenger-name" placeholder="Full name" required></label>
+        <label>Number of passengers<input type="number" id="passengers" min="1" max="50" value="4" required></label>
+
+        <div id="fare-estimate" class="fare-estimate hidden">
+          <div class="fare-row"><span>Distance</span><strong><span id="fare-distance">0</span> km</strong></div>
+          <div class="fare-row"><span>Rate</span><strong>₹<span id="fare-rate">0</span>/km</strong></div>
+          <div class="fare-row"><span>Base fare</span><strong>₹<span id="fare-base">0</span></strong></div>
+          <div class="fare-row"><span>GST (5%)</span><strong>₹<span id="fare-gst">0</span></strong></div>
+          <div class="fare-row fare-total"><span>Estimated total</span><strong>₹<span id="fare-total">0</span></strong></div>
+        </div>
+
+        <fieldset class="contact-fieldset">
+          <legend>Contact (required)</legend>
+          <label>Phone number<input type="tel" id="phone" pattern="[0-9]{10}" placeholder="10-digit mobile" required></label>
+          <label>Email (optional)<input type="email" id="email" placeholder="you@email.com"></label>
+        </fieldset>
+
+        <fieldset class="notify-fieldset">
+          <legend>Notify travels via</legend>
+          <label class="checkbox"><input type="checkbox" id="notify-email" checked> Email</label>
+          <label class="checkbox"><input type="checkbox" id="notify-whatsapp" checked> WhatsApp</label>
+        </fieldset>
+
+        <button type="submit" class="btn-book" id="submit-btn" disabled>Submit booking request</button>
+      </form>
+    </aside>
+  </main>
+
+  <section class="bookings-section container">
+    <h2>My bookings <span class="demo-badge">saved locally</span></h2>
+    <p class="bookings-hint">Admin must confirm vehicle availability before you can print the bill.</p>
+    <div id="bookings-list" class="bookings-list"></div>
+  </section>
+
+  <dialog id="pending-dialog" class="pending-dialog">
+    <div class="pending-box">
+      <div class="pending-icon">⏳</div>
+      <h3>Booking submitted</h3>
+      <p>Reference: <strong id="pending-ref"></strong></p>
+      <p>We will check if the vehicle is free on <strong id="pending-date"></strong>.</p>
+      <p class="pending-note">You can print the bill from <strong>My bookings</strong> once admin confirms.</p>
+      <button type="button" class="btn-book" id="pending-close">OK</button>
+    </div>
+  </dialog>
+
+  <dialog id="bill-dialog" class="bill-dialog">
+    <div class="bill-wrap no-print">
+      <p id="bill-pending-msg" class="bill-pending-msg hidden">Bill not available until admin confirms.</p>
+      <div class="bill-screen" id="bill-content"></div>
+      <div class="bill-actions">
+        <button type="button" class="btn-book btn-ghost" id="bill-close">Close</button>
+        <button type="button" class="btn-book" id="bill-print">Print bill</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="print-sheet" aria-hidden="true"></div>
+
+  <footer class="footer"><div class="container">© 2026 Chittoor Travels</div></footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/bill.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
