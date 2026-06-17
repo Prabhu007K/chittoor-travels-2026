@@ -12,7 +12,7 @@ A booking website for a local travel operator in Chittoor. Customers set pickup 
 ### Customer booking (`index.html`)
 
 - **Interactive map routing** — Leaflet + OpenStreetMap with pickup/drop pins
-- **Service-area pickup** — Chittoor, Chennai, Bangalore, Tirupati, and Hyderabad (45 km radius per city, shown as green circles)
+- **Service-area pickup** — Chittoor (45 km radius per city, shown as green circles)
 - **Drop anywhere in India** — click the map or search by place name
 - **Place search** — Nominatim geocoding for pickup and drop addresses
 - **Route distance** — OSRM driving route with straight-line fallback
