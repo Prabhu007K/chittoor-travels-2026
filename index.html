@@ -26,14 +26,10 @@
   <section class="route-section container booking-step">
     <p class="step-label">Step 1</p>
     <h2>Select pickup & drop on map</h2>
-    <p class="route-intro">Pick a city, then click the map inside the green circle for pickup. Drop anywhere in India.</p>
+    <p class="route-intro">Pickup is available only within Chittoor (green circle). Drop anywhere in India.</p>
     <div class="pickup-cities">
-      <span class="pickup-cities-label">Pickup cities:</span>
+      <span class="pickup-cities-label">Pickup area:</span>
       <button type="button" class="city-chip active" data-pickup-city="chittoor">Chittoor</button>
-      <button type="button" class="city-chip" data-pickup-city="chennai">Chennai</button>
-      <button type="button" class="city-chip" data-pickup-city="bangalore">Bangalore</button>
-      <button type="button" class="city-chip" data-pickup-city="tirupati">Tirupati</button>
-      <button type="button" class="city-chip" data-pickup-city="hyderabad">Hyderabad</button>
     </div>
     <div class="map-toolbar">
       <button type="button" id="mode-pickup" class="map-mode active">📍 Pickup</button>
@@ -43,7 +39,7 @@
     </div>
     <div class="map-search-row">
       <div class="map-search">
-        <input type="text" id="search-pickup" placeholder="Search pickup within service cities">
+        <input type="text" id="search-pickup" placeholder="Search pickup in Chittoor area">
         <button type="button" id="search-pickup-btn" class="map-search-btn">Go</button>
       </div>
       <div class="map-search">
