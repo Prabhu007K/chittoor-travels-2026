@@ -6,10 +6,6 @@ const RouteMap = (() => {
 
   const PICKUP_AREAS = [
     { id: 'chittoor', name: 'Chittoor', center: [13.2172, 79.1003], zoom: 12 },
-    { id: 'chennai', name: 'Chennai', center: [13.0827, 80.2707], zoom: 11 },
-    { id: 'bangalore', name: 'Bangalore', center: [12.9716, 77.5946], zoom: 11 },
-    { id: 'tirupati', name: 'Tirupati', center: [13.6288, 79.4192], zoom: 13 },
-    { id: 'hyderabad', name: 'Hyderabad', center: [17.385, 78.4867], zoom: 11 },
   ];
 
   const INDIA_BOUNDS = { south: 6.5, north: 37.1, west: 68.1, east: 97.5 };
@@ -68,7 +64,7 @@ const RouteMap = (() => {
   function showServiceError(type, locationName) {
     const el = document.getElementById('route-error');
     const extra = type === 'pickup'
-      ? `Pickup is only available within ~${PICKUP_RADIUS_KM} km of ${serviceAreaNames()}. Select a city chip, then click the map.`
+      ? `Pickup is only available within ~${PICKUP_RADIUS_KM} km of Chittoor. Click inside the green circle on the map.`
       : 'Drop points must be within India.';
     el.textContent = `Sorry, our service to ${type} at "${locationName}" is not available. ${extra}`;
     el.classList.remove('hidden');
@@ -398,7 +394,7 @@ const RouteMap = (() => {
     if (!state.pickup || !state.drop) {
       el.classList.add('hidden');
       if (!document.getElementById('route-error').classList.contains('hidden')) return;
-      setRouteStatus('Pick a city, click the map for pickup, then set drop anywhere in India.');
+      setRouteStatus('Click inside the green circle near Chittoor for pickup, then set drop anywhere in India.');
       return;
     }
     el.classList.remove('hidden');
